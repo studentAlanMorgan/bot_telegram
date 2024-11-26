@@ -44,7 +44,7 @@ class TiktokDownloader:
         else:
             return {
                 "status": "error",
-                "message": "Không thể tải video từ link này!",
+                "message": "Cannot download video from this link!",
             }
 
     def extract_audio(self):
