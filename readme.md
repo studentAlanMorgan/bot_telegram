@@ -4,4 +4,4 @@
 
     TOKEN=<TOKEN>
 
-Để lấy token truy cập vào Telegram, tìm tới `BotFather`. Nhắn `/newbot` rồi tiếp tục nhắn `<tên kênh>`. Sau khi hoàn thành BotFather sẽ trả về token.
+To get the Telegram access token, go to BotFather. Text /newbot then <channel name>. Once done, BotFather will return the token.
