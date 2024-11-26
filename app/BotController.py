@@ -20,15 +20,15 @@ class BotController:
 
     async def start(self, message):
         reply_message = (
-            "Xin chào, tôi là bot tải nội dung từ Tiktok, Douyin, Youtube, Instagram.."
-            + "\nĐể sử dụng bot vui lòng gửi link đến video/hình ảnh muốn tải về nhé!"
+            "Hello, I am a bot that downloads content from Tiktok, Douyin, Youtube, Instagram.."
+            + "\nTo use the bot please send the link to the video/image you want to download!"
         )
         await self.bot.reply_to(message, reply_message)
         logger.info(reply_message)
 
     async def help(self, message):
         reply_message = (
-            "Để sử dụng bot vui lòng gửi link đến video/hình ảnh muốn tải về nhé!"
+            "To use the bot please send the link to the video/image you want to download!"
         )
         await self.bot.reply_to(message, reply_message)
         logger.info(reply_message)
