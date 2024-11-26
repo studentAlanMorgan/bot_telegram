@@ -20,27 +20,45 @@ class BotController:
 
     async def start(self, message):
         reply_message = (
-            "Hello, I am a bot that downloads content from Tiktok, Douyin, Youtube, Instagram.."
-            + "\nTo use the bot please send the link to the video/image you want to download!"
+            "Xin chào, tôi là bot tải nội dung từ Tiktok, Douyin, Youtube, Instagram.."
+            + "\nĐể sử dụng bot vui lòng gửi link đến video/hình ảnh muốn tải về nhé!"
         )
         await self.bot.reply_to(message, reply_message)
         logger.info(reply_message)
 
     async def help(self, message):
         reply_message = (
-            "To use the bot please send the link to the video/image you want to download!"
+            "Để sử dụng bot vui lòng gửi link đến video/hình ảnh muốn tải về nhé!"
         )
         await self.bot.reply_to(message, reply_message)
         logger.info(reply_message)
 
     async def downloader(self, message):
         if "tiktok" in message.text:
-            await self.show_options(message, self.tiktokDownloader)
+            await self.download_and_send(message, self.tiktokDownloader)
         elif "douyin" in message.text:
-            await self.show_options(message, self.douyinDownloader)
+            await self.download_and_send(message, self.douyinDownloader)
 
-            # self.bot.send_message(message.chat.id, "Choose:", reply_markup=markup)
-
+    async def download_and_send(self, message, service):
+        msg = await self.bot.reply_to(message, "Downloading...")
+        data = service.extract_video(message.text)
+        if data["status"] == "error":
+            await self.bot.edit_message_text(
+                chat_id=message.chat.id,
+                text=data["message"],
+                message_id=msg.message_id,
+            )
+        else:
+            video_url = next((button["url"] for button in data["buttons"] if "Download" in button["title"]), None)
+            if video_url:
+                await self.handle_download_video(message.chat.id, message.message_id, video_url)
+                await self.bot.delete_message(chat_id=message.chat.id, message_id=msg.message_id)
+            else:
+                await self.bot.edit_message_text(
+                    chat_id=message.chat.id,
+                    text="Couldn't find a download link for the video.",
+                    message_id=msg.message_id,
+                )
     async def show_options(self, message, service):
         msg = await self.bot.reply_to(message, "Searching...")
         data = service.extract_video(message.text)
